@@ -19,16 +19,20 @@ const selectWellInfo = async wellId => {
   return await appData.query(
     `
     SELECT
+      w.WellName,
       w.Flow,
       w.Static,
       w.Diff,
       w.Cassing,
       w.Temperature,
       w.Roads,
-      s.Status
+      s.Status,
+      a.AreaName
     FROM well w
     INNER JOIN status s
     ON w.StatusId = s.StatusId
+    INNER JOIN area a
+    ON a.AreaId = w.AreaId
     WHERE w.WellName = ?
     `,
     [wellId]
@@ -44,6 +48,31 @@ const selectWellId = async wellName => {
     WHERE WellName = ?
     `,
     [wellName]
+  );
+};
+
+const selectCommentTitle = async (wellId, title) => {
+  return await appData.query(
+    `
+    SELECT
+      *
+    FROM comment
+    WHERE Wellid = ?
+    AND Title = ?
+    `,
+    [wellId, title]
+  );
+};
+
+const updateComment = async (wellId, title, text) => {
+  return await appData.query(
+    `
+    UPDATE comment
+    SET Comment = ?
+    WHERE WellId = ?
+    AND Title =?
+    `,
+    [text, wellId, title]
   );
 };
 
@@ -80,4 +109,6 @@ module.exports = {
   selectWellId,
   insertComment,
   selectComments,
+  selectCommentTitle,
+  updateComment,
 };
