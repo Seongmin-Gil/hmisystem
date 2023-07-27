@@ -20,20 +20,24 @@ const selectWellInfo = async wellId => {
     `
     SELECT
       w.WellName,
-      w.Flow,
-      w.Static,
-      w.Diff,
-      w.Cassing,
-      w.Temperature,
-      w.Roads,
       s.Status,
-      a.AreaName
+      a.AreaName,
+      d.Flow,
+      d.Static,
+      d.Diff,
+      d.Casing,
+      d.Temp,
+      d.Roads 
     FROM well w
     INNER JOIN status s
     ON w.StatusId = s.StatusId
     INNER JOIN area a
     ON a.AreaId = w.AreaId
+    inner join data d 
+    on w.WellId = d.WellId 
     WHERE w.WellName = ?
+    order by d.CurrentTime desc
+    limit 1;
     `,
     [wellId]
   );
