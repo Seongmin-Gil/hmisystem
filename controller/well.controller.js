@@ -15,7 +15,12 @@ const getWells = async (req, res) => {
 
 const getWellInfo = async (req, res) => {
   const { wellName } = req.params;
-  const [wellInfo] = await selectWellInfo(wellName);
+  let [wellInfo] = await selectWellInfo(wellName);
+  if(wellInfo){
+    wellInfo.connect = 1;
+  } else {
+    wellInfo = {connect : 0};
+  }
   return res.status(200).json(wellInfo);
 };
 
