@@ -43,6 +43,24 @@ const selectWellInfo = async wellId => {
   );
 };
 
+const selectWellInfoBref = async wellId => {
+  return await appData.query(
+    `
+    SELECT
+      w.WellName,
+      s.Status,
+      a.AreaName
+    FROM well w
+    INNER JOIN status s
+    ON w.StatusId = s.StatusId
+    INNER JOIN area a
+    ON a.AreaId = w.AreaId 
+    WHERE w.WellName = ?;
+    `,
+    [wellId]
+  );
+};
+
 const selectWellId = async wellName => {
   return await appData.query(
     `
@@ -111,6 +129,7 @@ module.exports = {
   selectWells,
   selectWellInfo,
   selectWellId,
+  selectWellInfoBref,
   insertComment,
   selectComments,
   selectCommentTitle,
