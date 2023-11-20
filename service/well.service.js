@@ -22,12 +22,17 @@ const selectWellInfo = async wellId => {
       w.WellName,
       s.Status,
       a.AreaName,
-      d.Flow,
-      d.Static,
-      d.Diff,
-      d.Casing,
-      d.Temp,
-      d.Roads 
+      d.GasFlowRate,
+      d.TodayFlow,
+      d.FlowTimeToday,
+      d.StaticPressure,
+      d.DiffPressure,
+      d.Temperature,
+      d.CondenstateToday,
+      d.ESDZSO,
+      d.HighSepLevel,
+      d.OrificePlate,
+      d.Voltage 
     FROM well w
     INNER JOIN status s
     ON w.StatusId = s.StatusId
@@ -36,7 +41,7 @@ const selectWellInfo = async wellId => {
     inner join data d 
     on w.WellId = d.WellId 
     WHERE w.WellName = ?
-    order by d.CurrentTime desc
+    order by d.Id desc
     limit 1;
     `,
     [wellId]
