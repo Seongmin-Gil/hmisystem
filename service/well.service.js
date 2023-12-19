@@ -32,7 +32,8 @@ const selectWellInfo = async wellId => {
       d.ESDZSO,
       d.HighSepLevel,
       d.OrificePlate,
-      d.Voltage 
+      d.Voltage,
+      d.CurrentTime
     FROM well w
     INNER JOIN status s
     ON w.StatusId = s.StatusId
@@ -138,7 +139,8 @@ const selectWellTotalData = async wellId => {
       d.GasFlowRate,
       d.StaticPressure,
       d.DiffPressure,
-      d.Temperature
+      d.Temperature,
+      d.CurrentTime
     FROM data d
     INNER JOIN well w
     ON d.WellId = w.WellId

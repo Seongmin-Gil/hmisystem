@@ -63,6 +63,7 @@ const getWellTotalData = async (req, res) => {
 
 const findWellId = async(wellName) => {
   const result = await selectWellId(wellName);
+  console.log(result);
   if(!result[0]) {
     const err = new CustomError(401, "Invalid WellId")
     throw err;
