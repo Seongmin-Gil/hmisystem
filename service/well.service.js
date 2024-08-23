@@ -131,6 +131,24 @@ const selectComments = async wellId => {
   );
 };
 
+const selectWellTotalData = async wellId => {
+  return await appData.query(
+    `
+    SELECT
+      W.WellName,
+      d.GasFlowRate,
+      d.StaticPressure,
+      d.DiffPressure,
+      d.Temperature,
+      d.CurrentTime
+    FROM data d
+    INNER JOIN well w
+    ON d.WellId = w.WellId
+    WHERE d.WellId = ?
+    `, [wellId]
+  )
+}
+
 module.exports = {
   selectWells,
   selectWellInfo,
@@ -140,4 +158,5 @@ module.exports = {
   selectComments,
   selectCommentTitle,
   updateComment,
+  selectWellTotalData,
 };

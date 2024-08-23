@@ -7,7 +7,10 @@ const {
   selectCommentTitle,
   updateComment,
   selectWellInfoBref,
+  selectWellTotalData,
 } = require('../service/well.service');
+
+const CustomError = require('../util/customError');
 
 const getWells = async (req, res) => {
   const wells = await selectWells();
@@ -29,7 +32,7 @@ const getWellInfo = async (req, res) => {
 const postComment = async (req, res) => {
   const { wellName } = req.params;
   const { title, text } = req.body;
-  const [{ WellId }] = await selectWellId(wellName);
+  const WellId = await findWellId(wellName);
   const [result] = await selectCommentTitle(WellId, title);
   if (result) {
     await updateComment(WellId, title, text);
@@ -41,16 +44,32 @@ const postComment = async (req, res) => {
 
 const getComment = async (req, res) => {
   const { wellName } = req.params;
-  const [{ WellId }] = await selectWellId(wellName);
+  const WellId = await findWellId(wellName);;
   const comments = await selectComments(WellId);
   return res.status(200).json({ comments });
 };
 
 const postCheck = async (req, res) => {
   const { id } = req.body;
-  console.log(id);
   return res.status(200).json({ message: 'check' });
 };
+
+const getWellTotalData = async (req, res) => {
+  const {wellName} = req.params;
+  const WellId = await findWellId(wellName);
+  const result = await selectWellTotalData(WellId);
+  return res.status(201).json({ result });
+}
+
+const findWellId = async(wellName) => {
+  const result = await selectWellId(wellName);
+  console.log(result);
+  if(!result[0]) {
+    const err = new CustomError(401, "Invalid WellId")
+    throw err;
+  }
+  return result[0]["WellId"];
+}
 
 module.exports = {
   getWells,
@@ -58,4 +77,5 @@ module.exports = {
   postComment,
   getComment,
   postCheck,
+  getWellTotalData,
 };

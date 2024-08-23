@@ -11,8 +11,8 @@ const createApp = () => {
   app.use(cors());
   app.use(morgan("dev"));
   app.use(express.json());
-  app.use(router);
-  app.get("/ping", (req, res) => {
+  app.use("/back", router);
+  app.get("/back/ping", (req, res) => {
     res.json({ message: "pong" });
   });
   app.use(errorHandler);
