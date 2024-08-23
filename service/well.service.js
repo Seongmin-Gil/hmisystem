@@ -32,7 +32,8 @@ const selectWellInfo = async wellId => {
       d.ESDZSO,
       d.HighSepLevel,
       d.OrificePlate,
-      d.Voltage 
+      d.Voltage,
+      d.CurrentTime 
     FROM well w
     INNER JOIN status s
     ON w.StatusId = s.StatusId
