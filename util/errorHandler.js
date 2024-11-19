@@ -9,7 +9,7 @@ const errorHandler = (err, req, res, next) => {
   const message = err?.message || 'INTERNAL_SERVER_ERROR';
   const code = err?.code || 'INTERNAL_SERVER_ERROR';
   console.log(err);
-  return res.status(status).json({ status, code });
+  return res.status(status).json({ status, message });
 };
 
 module.exports = {
